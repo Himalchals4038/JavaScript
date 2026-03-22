@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "alert": "^6.0.2",
     "axios": "^1.13.6",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
@@ -11,6 +12,7 @@
     "mongoose": "^9.3.1",
     "nestjs": "^0.0.1",
     "next": "^16.2.1",
+    "node-notifier": "^10.0.1",
     "pg": "^8.20.0",
     "prompt-sync": "^4.2.0",
     "react": "^19.2.4",

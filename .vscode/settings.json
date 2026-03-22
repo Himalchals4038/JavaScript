@@ -1,6 +1,8 @@
 {
   "cSpell.words": [
+    "dinesh",
     "Kurukshetra",
+    "mayank",
     "Nayan",
     "Payal",
     "Raut",
@@ -9,6 +11,16 @@
     "Shresth",
     "Shruti",
     "Sonepat",
-    "Vinay"
-  ]
+    "sunil",
+    "vijay",
+    "Vinay",
+    "Vinod"
+  ],
+  "Codegeex.CommitMessageStyle": "Auto",
+  "Codegeex.SidebarUI.LanguagePreference": "English",
+  "Codegeex.RepoIndex": true,
+  "Codegeex.GenerationPreference": "automatic",
+  "Codegeex.Chat.LanguagePreference": "English",
+  "Codegeex.Comment.LanguagePreference": "English",
+  "Codegeex.CommitMessage.LanguagePreference": "English"
 }
