@@ -27,3 +27,8 @@ console.log(...arr);
 //Joins the array
 let greet = ['Thank', 'you', 'for', 'visiting', 'our', 'website.'];
 console.log(greet.join(' '));
+
+console.log(arr.toString());
+let arr2 = [99, 98, 97, 96, 95];
+let arr3 = [101, 102, 103, 104, 105];
+console.log(arr.concat(arr2, arr3));

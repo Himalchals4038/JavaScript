@@ -1,0 +1,38 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+body{
+    background-color: aquamarine;
+    color: brown;
+    font-family: comic sans ms;
+    font-size: 15px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+header{
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
+main{
+    padding: 10px;
+    flex: 1;
+}
+section{
+    padding: 10px;
+    margin: 10px;
+    background-color: white;
+    text-decoration: none;
+}
+.skills ul{
+    list-style-type: none;
+}
+footer{
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
