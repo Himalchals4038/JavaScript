@@ -74,3 +74,10 @@ flipkartClone.innerText = "Instamart";
 document.body.children[2].style.color = "rgb(12, 201, 185)";
 // console.dir(document.body.firstChild.nextElementSibling);
 document.body.firstChild.nextElementSibling.style.color = "rgb(94, 106, 221)";
+
+let oldHead = document.getElementById("old-heading");
+// console.log(oldHead);
+oldHead.style.visibility = "hidden";
+
+let infringe = document.querySelector(".infringe");
+// console.log(infringe);
