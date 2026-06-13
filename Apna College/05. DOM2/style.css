@@ -1,0 +1,31 @@
+.button-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid black;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+}
+.para1{
+    background-color: rgb(35, 206, 149);
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+}
+.para2{
+    background-color: rgb(69, 147, 235);
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+}
+.para3{
+    background-color: rgb(224, 42, 224);
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+}
+.para2-new{
+    color:rgb(216, 19, 117);
+}

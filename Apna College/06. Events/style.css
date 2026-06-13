@@ -1,0 +1,37 @@
+body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+.box-content{
+    height: 200px;
+    width: 200px;
+    background-color: chartreuse;
+    color:darkblue;
+    text-align: center;
+    border: 2px solid black;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+}
+.event-listener{
+    height: 200px;
+    width: 200px;
+    background-color: rgb(16, 151, 230);
+    text-align: center;
+    border: 2px solid black;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+}
+.event-listener p{
+    color:rgb(116, 11, 143);
+}
+#view-mode{
+    height: 50px;
+    width: 150px;
+    margin: 20px;
+}
