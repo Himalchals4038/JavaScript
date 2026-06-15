@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "dependencies": {
     "alert": "^6.0.2",
     "axios": "^1.13.6",

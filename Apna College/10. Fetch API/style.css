@@ -1,0 +1,21 @@
+body{ 
+    font-family: Arial, sans-serif; 
+    padding: 20px; 
+}
+.meme-container{
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 20px;
+}
+.meme-card{
+    width: 300px; 
+    border: 1px solid #ddd; 
+    padding: 10px; 
+    border-radius: 8px; 
+    text-align: center;
+}
+.meme-card img{
+    max-width: 100%; 
+    height: auto; 
+    border-radius: 4px;
+}
