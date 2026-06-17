@@ -52,5 +52,22 @@
   "Codegeex.GenerationPreference": "automatic",
   "Codegeex.Chat.LanguagePreference": "English",
   "Codegeex.Comment.LanguagePreference": "English",
-  "Codegeex.CommitMessage.LanguagePreference": "English"
+  "Codegeex.CommitMessage.LanguagePreference": "English",
+  "sqltools.connections": [
+    {
+      "mysqlOptions": {
+        "authProtocol": "default",
+        "enableSsl": "Disabled"
+      },
+      "ssh": "Disabled",
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 3306,
+      "driver": "MySQL",
+      "name": "Himadri_Mondal",
+      "username": "root",
+      "password": "RakhiBipin19761965@",
+      "database": "SQL_Himadri"
+    }
+  ]
 }
