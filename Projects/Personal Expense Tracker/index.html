@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Personal Expense Tracker - Modern financial dashboard to manage income, track expenses, monitor category budgets, and reach savings goals with real-time interactive charts.">
+  <title>ApexExpense | Smart Personal Finance & Expense Tracker</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- App Container -->
+  <div class="app-container">
+    
+    <!-- Navigation Header -->
+    <header class="app-header glass-card">
+      <div class="brand-container">
+        <div class="brand-logo">
+          <i class="fa-solid fa-wallet"></i>
+        </div>
+        <div class="brand-info">
+          <h1 class="brand-title">Apex<span>Expense</span></h1>
+          <p class="brand-subtitle">Smart Personal Finance Dashboard</p>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <div class="quick-date" id="current-date-badge">
+          <i class="fa-regular fa-calendar"></i> <span id="header-date">Today</span>
+        </div>
+
+        <button id="btn-theme-toggle" class="btn-icon" title="Toggle Light/Dark Theme" aria-label="Toggle Theme">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+
+        <button id="btn-seed-data" class="btn btn-secondary btn-sm" title="Load Sample Financial Data">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> Demo Data
+        </button>
+
+        <button id="btn-export-csv" class="btn btn-secondary btn-sm" title="Export Transactions as CSV">
+          <i class="fa-solid fa-file-csv"></i> Export CSV
+        </button>
+
+        <button id="btn-open-import-modal" class="btn btn-secondary btn-sm" title="Import Transactions from CSV">
+          <i class="fa-solid fa-file-import"></i> Import
+        </button>
+
+        <button id="btn-open-modal" class="btn btn-primary" title="Add Transaction">
+          <i class="fa-solid fa-plus"></i> Add Transaction
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Layout -->
+    <main class="dashboard-grid">
+      
+      <!-- Top Metrics Overview Bar -->
+      <section class="metrics-row" aria-label="Financial Summary Metrics">
+        
+        <!-- Total Balance Card -->
+        <div class="metric-card glass-card balance-card">
+          <div class="metric-header">
+            <span class="metric-title">Total Balance</span>
+            <div class="metric-icon icon-balance">
+              <i class="fa-solid fa-vault"></i>
+            </div>
+          </div>
+          <div class="metric-value-wrapper">
+            <span class="currency-symbol">$</span>
+            <span class="metric-value" id="total-balance">0.00</span>
+          </div>
+          <div class="metric-footer">
+            <span class="trend-pill trend-up" id="balance-status-pill">
+              <i class="fa-solid fa-arrow-trend-up"></i> Net Surplus
+            </span>
+            <span class="metric-subtext">Overall Position</span>
+          </div>
+        </div>
+
+        <!-- Monthly Income Card -->
+        <div class="metric-card glass-card income-card">
+          <div class="metric-header">
+            <span class="metric-title">Monthly Income</span>
+            <div class="metric-icon icon-income">
+              <i class="fa-solid fa-arrow-down-left-and-arrow-up-right-to-center rotate-income"></i>
+              <i class="fa-solid fa-circle-arrow-down"></i>
+            </div>
+          </div>
+          <div class="metric-value-wrapper text-success">
+            <span class="currency-symbol">$</span>
+            <span class="metric-value" id="total-income">0.00</span>
+          </div>
+          <div class="metric-footer">
+            <span class="metric-count" id="income-count">0 entries</span>
+            <span class="metric-subtext">This Month</span>
+          </div>
+        </div>
+
+        <!-- Monthly Expense Card -->
+        <div class="metric-card glass-card expense-card">
+          <div class="metric-header">
+            <span class="metric-title">Monthly Expenses</span>
+            <div class="metric-icon icon-expense">
+              <i class="fa-solid fa-circle-arrow-up"></i>
+            </div>
+          </div>
+          <div class="metric-value-wrapper text-danger">
+            <span class="currency-symbol">$</span>
+            <span class="metric-value" id="total-expenses">0.00</span>
+          </div>
+          <div class="metric-footer">
+            <span class="metric-count" id="expense-count">0 entries</span>
+            <span class="metric-subtext">This Month</span>
+          </div>
+        </div>
+
+        <!-- Savings Rate Card -->
+        <div class="metric-card glass-card savings-card">
+          <div class="metric-header">
+            <span class="metric-title">Savings Rate</span>
+            <div class="metric-icon icon-savings">
+              <i class="fa-solid fa-piggy-bank"></i>
+            </div>
+          </div>
+          <div class="metric-value-wrapper text-accent">
+            <span class="metric-value" id="savings-rate">0.0</span>
+            <span class="percent-symbol">%</span>
+          </div>
+          <div class="metric-footer">
+            <div class="mini-progress-bar">
+              <div class="mini-progress-fill" id="savings-rate-bar" style="width: 0%;"></div>
+            </div>
+            <span class="metric-subtext" id="savings-target-text">Target: 20%</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Primary Dashboard Content: Charts & Transactions -->
+      <div class="main-column">
+        
+        <!-- Charts Container Card -->
+        <section class="section-card glass-card charts-section">
+          <div class="section-header">
+            <div class="section-title-group">
+              <h2><i class="fa-solid fa-chart-pie text-gradient"></i> Analytics & Trends</h2>
+              <p class="section-subtitle">Visual insight into your cash flow and expenditure pattern</p>
+            </div>
+            <div class="chart-timeframe-selector">
+              <button class="btn-timeframe active" data-range="this-month">This Month</button>
+              <button class="btn-timeframe" data-range="last-3-months">3 Months</button>
+              <button class="btn-timeframe" data-range="all">All Time</button>
+            </div>
+          </div>
+
+          <div class="charts-grid">
+            <!-- Category Distribution Donut Chart -->
+            <div class="chart-container">
+              <div class="chart-title">
+                <span>Expenses by Category</span>
+              </div>
+              <div class="canvas-wrapper">
+                <canvas id="categoryChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Cashflow Trend Line/Bar Chart -->
+            <div class="chart-container">
+              <div class="chart-title">
+                <span>Income vs Expense Trend</span>
+              </div>
+              <div class="canvas-wrapper">
+                <canvas id="cashflowChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Transactions History Card -->
+        <section class="section-card glass-card transactions-section">
+          <div class="section-header flex-wrap">
+            <div class="section-title-group">
+              <h2><i class="fa-solid fa-list-check text-gradient"></i> Recent Transactions</h2>
+              <p class="section-subtitle">Manage, filter, and audit all financial entries</p>
+            </div>
+            <button id="btn-clear-all" class="btn btn-ghost btn-sm text-danger-muted" title="Clear all stored transactions">
+              <i class="fa-solid fa-trash-can"></i> Clear All
+            </button>
+          </div>
+
+          <!-- Transaction Filters Bar -->
+          <div class="filters-bar">
+            <!-- Search Box -->
+            <div class="search-box">
+              <i class="fa-solid fa-magnifying-glass search-icon"></i>
+              <input type="text" id="search-input" placeholder="Search by title, note, tag..." aria-label="Search transactions">
+              <button id="btn-clear-search" class="btn-clear-input hidden" title="Clear Search">&times;</button>
+            </div>
+
+            <!-- Type Filter Tabs -->
+            <div class="filter-tabs" id="type-filter-tabs">
+              <button class="filter-tab active" data-type="all">All</button>
+              <button class="filter-tab" data-type="income">Income</button>
+              <button class="filter-tab" data-type="expense">Expense</button>
+            </div>
+
+            <!-- Category Filter Dropdown -->
+            <div class="filter-dropdown-wrapper">
+              <select id="category-filter" aria-label="Filter by Category">
+                <option value="all">All Categories</option>
+                <!-- Dynamic Categories Populated Here -->
+              </select>
+            </div>
+
+            <!-- Sort By Dropdown -->
+            <div class="filter-dropdown-wrapper">
+              <select id="sort-filter" aria-label="Sort Transactions">
+                <option value="date-desc">Newest First</option>
+                <option value="date-asc">Oldest First</option>
+                <option value="amount-desc">Highest Amount</option>
+                <option value="amount-asc">Lowest Amount</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Transaction List Table / Container -->
+          <div class="transaction-list-wrapper">
+            <div id="transaction-list" class="transaction-list">
+              <!-- Rendered via JS -->
+            </div>
+            
+            <!-- Empty State Placeholder -->
+            <div id="empty-state" class="empty-state hidden">
+              <div class="empty-icon"><i class="fa-solid fa-receipt"></i></div>
+              <h3>No Transactions Found</h3>
+              <p>Start by adding an income or expense transaction or load demo data.</p>
+              <button id="btn-empty-add" class="btn btn-primary btn-sm margin-top-md">
+                <i class="fa-solid fa-plus"></i> Add First Transaction
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Secondary Sidebar Column: Budgets & Savings Goals -->
+      <aside class="sidebar-column">
+        
+        <!-- Category Budgets Widget Card -->
+        <section class="section-card glass-card budgets-section">
+          <div class="section-header">
+            <div class="section-title-group">
+              <h3><i class="fa-solid fa-chart-line text-accent"></i> Category Budgets</h3>
+              <p class="section-subtitle">Monthly spending thresholds</p>
+            </div>
+            <button id="btn-open-budget-modal" class="btn-icon btn-icon-sm" title="Edit Budget Caps">
+              <i class="fa-solid fa-gear"></i>
+            </button>
+          </div>
+
+          <div id="budget-bars-list" class="budget-bars-list">
+            <!-- Rendered dynamically by JS -->
+          </div>
+        </section>
+
+        <!-- Savings Goals Widget Card -->
+        <section class="section-card glass-card goals-section">
+          <div class="section-header">
+            <div class="section-title-group">
+              <h3><i class="fa-solid fa-bullseye text-gradient"></i> Savings Goals</h3>
+              <p class="section-subtitle">Track funds for your dreams</p>
+            </div>
+            <button id="btn-open-goal-modal" class="btn-icon btn-icon-sm" title="Create New Goal">
+              <i class="fa-solid fa-plus"></i>
+            </button>
+          </div>
+
+          <div id="savings-goals-list" class="savings-goals-list">
+            <!-- Rendered dynamically by JS -->
+          </div>
+        </section>
+
+        <!-- Financial Health Tip Widget -->
+        <section class="section-card glass-card tip-card">
+          <div class="tip-header">
+            <i class="fa-solid fa-lightbulb tip-icon"></i>
+            <h4>Smart Money Tip</h4>
+          </div>
+          <p class="tip-text" id="random-financial-tip">
+            Following the 50/30/20 rule? Direct 50% of income to Needs, 30% to Wants, and 20% to Savings.
+          </p>
+        </section>
+      </aside>
+    </main>
+
+    <!-- App Footer -->
+    <footer class="app-footer">
+      <p>&copy; 2026 ApexExpense. Crafted for intelligent personal finance management.</p>
+    </footer>
+  </div>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- Add / Edit Transaction Modal -->
+  <div id="modal-transaction" class="modal-backdrop hidden" aria-hidden="true">
+    <div class="modal-card glass-card">
+      <div class="modal-header">
+        <h3 id="modal-tx-title"><i class="fa-solid fa-money-bill-transfer"></i> Add New Transaction</h3>
+        <button id="btn-close-tx-modal" class="btn-close">&times;</button>
+      </div>
+      <form id="form-transaction">
+        <input type="hidden" id="tx-id" value="">
+        
+        <!-- Transaction Type Switcher -->
+        <div class="form-group">
+          <label class="form-label">Transaction Type</label>
+          <div class="type-toggle-group">
+            <input type="radio" id="type-expense" name="tx-type" value="expense" checked>
+            <label for="type-expense" class="toggle-btn toggle-expense">
+              <i class="fa-solid fa-arrow-up"></i> Expense
+            </label>
+            
+            <input type="radio" id="type-income" name="tx-type" value="income">
+            <label for="type-income" class="toggle-btn toggle-income">
+              <i class="fa-solid fa-arrow-down"></i> Income
+            </label>
+          </div>
+        </div>
+
+        <!-- Title & Amount Row -->
+        <div class="form-row">
+          <div class="form-group flex-2">
+            <label for="tx-title" class="form-label">Title / Description <span class="required">*</span></label>
+            <input type="text" id="tx-title" required placeholder="e.g. Grocery store, Salary, Coffee" autocomplete="off">
+          </div>
+
+          <div class="form-group flex-1">
+            <label for="tx-amount" class="form-label">Amount ($) <span class="required">*</span></label>
+            <input type="number" id="tx-amount" step="0.01" min="0.01" required placeholder="0.00">
+          </div>
+        </div>
+
+        <!-- Category & Date Row -->
+        <div class="form-row">
+          <div class="form-group flex-1">
+            <label for="tx-category" class="form-label">Category <span class="required">*</span></label>
+            <select id="tx-category" required>
+              <!-- Populated dynamically based on type -->
+            </select>
+          </div>
+
+          <div class="form-group flex-1">
+            <label for="tx-date" class="form-label">Date <span class="required">*</span></label>
+            <input type="date" id="tx-date" required>
+          </div>
+        </div>
+
+        <!-- Payment Method & Tags Row -->
+        <div class="form-row">
+          <div class="form-group flex-1">
+            <label for="tx-payment" class="form-label">Payment Method</label>
+            <select id="tx-payment">
+              <option value="Credit Card">Credit Card</option>
+              <option value="Debit Card">Debit Card</option>
+              <option value="Bank Transfer">Bank Transfer</option>
+              <option value="Cash">Cash</option>
+              <option value="UPI / Wallet">UPI / Digital Wallet</option>
+            </select>
+          </div>
+
+          <div class="form-group flex-1">
+            <label for="tx-notes" class="form-label">Notes (Optional)</label>
+            <input type="text" id="tx-notes" placeholder="Additional details...">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" id="btn-cancel-tx-modal" class="btn btn-secondary">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Transaction</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Category Budget Manager Modal -->
+  <div id="modal-budget" class="modal-backdrop hidden" aria-hidden="true">
+    <div class="modal-card glass-card">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-sliders"></i> Edit Category Budgets</h3>
+        <button id="btn-close-budget-modal" class="btn-close">&times;</button>
+      </div>
+      <form id="form-budget">
+        <p class="modal-desc">Set monthly expenditure limits for each expense category to stay on track.</p>
+        <div id="budget-input-fields" class="budget-fields-grid">
+          <!-- Populated dynamically by JS -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="btn-cancel-budget-modal" class="btn btn-secondary">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Budgets</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- New Savings Goal Modal -->
+  <div id="modal-goal" class="modal-backdrop hidden" aria-hidden="true">
+    <div class="modal-card glass-card">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-trophy"></i> Create Savings Goal</h3>
+        <button id="btn-close-goal-modal" class="btn-close">&times;</button>
+      </div>
+      <form id="form-goal">
+        <div class="form-group">
+          <label for="goal-title" class="form-label">Goal Name <span class="required">*</span></label>
+          <input type="text" id="goal-title" required placeholder="e.g. New Macbook, Emergency Fund, Hawaii Trip">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group flex-1">
+            <label for="goal-target" class="form-label">Target Amount ($) <span class="required">*</span></label>
+            <input type="number" id="goal-target" step="1" min="1" required placeholder="1000">
+          </div>
+
+          <div class="form-group flex-1">
+            <label for="goal-current" class="form-label">Current Saved ($)</label>
+            <input type="number" id="goal-current" step="1" min="0" value="0" placeholder="0">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="goal-icon" class="form-label">Icon</label>
+          <select id="goal-icon">
+            <option value="fa-plane">✈️ Vacation / Travel</option>
+            <option value="fa-laptop">💻 Tech / Gadgets</option>
+            <option value="fa-shield-halved">🛡️ Emergency Fund</option>
+            <option value="fa-car">🚗 Car / Vehicle</option>
+            <option value="fa-house">🏠 House / Rent</option>
+            <option value="fa-gift">🎁 Shopping / Gift</option>
+          </select>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" id="btn-cancel-goal-modal" class="btn btn-secondary">Cancel</button>
+          <button type="submit" class="btn btn-primary">Create Goal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Deposit Funds to Goal Modal -->
+  <div id="modal-deposit" class="modal-backdrop hidden" aria-hidden="true">
+    <div class="modal-card glass-card">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-piggy-bank"></i> Add Funds to Goal</h3>
+        <button id="btn-close-deposit-modal" class="btn-close">&times;</button>
+      </div>
+      <form id="form-deposit">
+        <input type="hidden" id="deposit-goal-id">
+        <p class="modal-desc" id="deposit-goal-name">Deposit money towards your goal.</p>
+        <div class="form-group">
+          <label for="deposit-amount" class="form-label">Amount to Add ($) <span class="required">*</span></label>
+          <input type="number" id="deposit-amount" step="0.01" min="0.01" required placeholder="100.00">
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="btn-cancel-deposit-modal" class="btn btn-secondary">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add Funds</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- CSV Import Modal -->
+  <div id="modal-import" class="modal-backdrop hidden" aria-hidden="true">
+    <div class="modal-card glass-card">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-file-import"></i> Import Transactions CSV</h3>
+        <button id="btn-close-import-modal" class="btn-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">Upload a standard CSV file with headers: <code>title, amount, type, category, date, paymentMethod, notes</code>.</p>
+        
+        <div class="file-drop-zone" id="csv-drop-zone">
+          <i class="fa-solid fa-cloud-arrow-up drop-icon"></i>
+          <p>Drag and drop your CSV file here, or click to browse</p>
+          <input type="file" id="csv-file-input" accept=".csv" class="file-input-hidden">
+        </div>
+        <div id="import-preview" class="import-preview hidden">
+          <p class="text-success"><i class="fa-solid fa-circle-check"></i> <span id="import-file-name">file.csv</span> ready (<span id="import-count">0</span> transactions parsed)</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="btn-cancel-import-modal" class="btn btn-secondary">Cancel</button>
+        <button type="button" id="btn-confirm-import" class="btn btn-primary" disabled>Process Import</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- Application Scripts -->
+  <script src="js/store.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

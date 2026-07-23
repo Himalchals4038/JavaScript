@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>India Weather Report - Live Tier 1 & Tier 2 Cities Dashboard</title>
+  <meta name="description" content="Comprehensive live weather report, air quality index, hourly trend charts, and 7-day forecasts for all Tier 1 and Tier 2 cities of India.">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌤️</text></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="theme-clear">
+
+  <!-- Background Ambient Glow Effects -->
+  <div class="bg-glow-1"></div>
+  <div class="bg-glow-2"></div>
+
+  <div class="app-container">
+
+    <!-- Header Navigation -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-icon">🌤️</div>
+        <div>
+          <h1 class="brand-title">SkyPulse India</h1>
+          <div class="brand-subtitle">Tier 1 & Tier 2 Cities Weather Hub</div>
+        </div>
+      </div>
+
+      <!-- Search Bar with Autocomplete -->
+      <div class="search-wrapper">
+        <div class="search-bar">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchInput" class="search-input" placeholder="Search Tier 1 & Tier 2 cities (e.g. Mumbai, Patna, Kochi, Kanpur)..." autocomplete="off">
+          <button id="geoBtn" class="geo-btn" title="Use My Live Geolocation">📍 My Location</button>
+        </div>
+        <div id="autocompleteDropdown" class="autocomplete-dropdown"></div>
+      </div>
+
+      <!-- Header Controls (Units, Theme, Compare) -->
+      <div class="header-controls">
+        <button id="compareBtn" class="pill-btn" style="background:rgba(129, 140, 248, 0.2); border-color:var(--accent-indigo); color:var(--text-primary);" title="Compare Indian Cities Side-by-Side">
+          ⚖️ Compare Cities
+        </button>
+
+        <div class="unit-toggle">
+          <button id="unitCelsius" class="unit-btn active">°C</button>
+          <button id="unitFahrenheit" class="unit-btn">°F</button>
+        </div>
+
+        <button id="themeToggleBtn" class="btn-icon" title="Toggle Light/Dark Theme">☀️</button>
+      </div>
+    </header>
+
+    <!-- Quick Regional & Tier Filter Pills -->
+    <div id="filterPills" class="filter-pills-bar"></div>
+
+    <!-- Alert Banner (Dynamic) -->
+    <div id="alertBanner" class="alert-banner" style="display: none;">
+      <span class="alert-icon">⚠️</span>
+      <span id="alertText">Severe weather alert message here</span>
+    </div>
+
+    <!-- Main Weather Dashboard Grid -->
+    <main class="dashboard-grid" style="margin-top: 1rem;">
+
+      <!-- Left Column: Main Weather & Forecasts -->
+      <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+
+        <!-- Hero Weather Banner Card -->
+        <section class="glass-card weather-hero-card">
+          <div class="hero-header">
+            <div class="hero-location-box">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <h2 id="heroCity" class="hero-city-title">Mumbai</h2>
+                <span id="heroTierBadge" class="tier-badge tier-1">Tier 1</span>
+              </div>
+              <div id="heroState" class="hero-subtext">Maharashtra, India</div>
+            </div>
+            <button id="heroFavBtn" class="hero-fav-btn" title="Save to Favorites">☆</button>
+          </div>
+
+          <div class="hero-body">
+            <div class="temp-large-display">
+              <span id="currentTemp" class="current-temp-val">29</span>
+              <span id="tempUnitSymbol" class="temp-unit-symbol">°C</span>
+            </div>
+            <div class="weather-condition-box">
+              <span id="weatherIcon" class="weather-condition-icon">🌤️</span>
+              <span id="weatherCondition" class="weather-condition-text">Partly Sunny</span>
+              <div id="feelsLike" class="high-low-feels">Feels like 32°C</div>
+              <div id="highLowTemp" class="high-low-feels">H: 33°C  L: 26°C</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Current Weather Metrics Cards Grid -->
+        <section class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-header">
+              <span>Humidity</span>
+              <span class="metric-icon">💧</span>
+            </div>
+            <div id="valHumidity" class="metric-value">68%</div>
+            <div class="metric-footer">Dew Point Normal</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <span>Wind Speed</span>
+              <span class="metric-icon">💨</span>
+            </div>
+            <div id="valWind" class="metric-value">14 km/h</div>
+            <div class="metric-footer">Southwest Breeze</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <span>Air Pressure</span>
+              <span class="metric-icon">⏲️</span>
+            </div>
+            <div id="valPressure" class="metric-value">1012 hPa</div>
+            <div class="metric-footer">Stable Barometer</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <span>UV Index</span>
+              <span class="metric-icon">☀️</span>
+            </div>
+            <div id="valUv" class="metric-value">6 / 11</div>
+            <div class="metric-footer">Moderate Sun Exposure</div>
+          </div>
+        </section>
+
+        <!-- 24-Hour Hourly Forecast Slider -->
+        <section class="glass-card">
+          <div class="section-title">
+            <span>🕒 24-Hour Forecast</span>
+            <span style="font-size:0.8rem; color:var(--text-secondary); font-weight:400;">Hourly Outlook</span>
+          </div>
+          <div id="hourlyScrollContainer" class="hourly-scroll-container"></div>
+        </section>
+
+        <!-- Temperature Trend Interactive Canvas Chart -->
+        <section class="glass-card">
+          <div class="section-title">
+            <span>📈 24-Hour Temperature Curve & Rain Probability</span>
+            <span style="font-size:0.8rem; color:var(--accent-cyan); font-weight:600;">Interactive Chart</span>
+          </div>
+          <div class="chart-container">
+            <canvas id="tempChart"></canvas>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- Right Column: AQI, Solar Arc & 7-Day Forecast -->
+      <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+
+        <!-- Air Quality Index (AQI) Card -->
+        <section class="glass-card aqi-container">
+          <div class="section-title" style="margin-bottom:0.5rem;">
+            <span>🍃 Air Quality Index (AQI)</span>
+          </div>
+          <div class="aqi-header-row">
+            <div style="display:flex; align-items:baseline; gap:6px;">
+              <span id="aqiVal" style="font-size:2.25rem; font-weight:800;">55</span>
+              <span style="font-size:0.8rem; color:var(--text-muted);">US AQI</span>
+            </div>
+            <span id="aqiBadge" class="aqi-badge" style="background-color: var(--aqi-fair);">Moderate</span>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="aqi-meter-bar">
+            <div id="aqiMeterFill" class="aqi-meter-fill"></div>
+          </div>
+
+          <div id="aqiAdvice" style="font-size:0.825rem; color:var(--text-secondary); line-height:1.4;">
+            Air quality is acceptable. Sensitive individuals should consider limiting prolonged outdoor exertion.
+          </div>
+
+          <!-- Key Pollutants breakdown -->
+          <div class="aqi-pollutants-grid">
+            <div class="pollutant-item">
+              <div class="pollutant-label">PM2.5</div>
+              <div id="valPm25" class="pollutant-val">18</div>
+            </div>
+            <div class="pollutant-item">
+              <div class="pollutant-label">PM10</div>
+              <div id="valPm10" class="pollutant-val">35</div>
+            </div>
+            <div class="pollutant-item">
+              <div class="pollutant-label">NO2</div>
+              <div id="valNo2" class="pollutant-val">12</div>
+            </div>
+            <div class="pollutant-item">
+              <div class="pollutant-label">O3</div>
+              <div id="valO3" class="pollutant-val">25</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Sunrise & Sunset Solar Arc Widget -->
+        <section class="glass-card solar-widget">
+          <div class="section-title" style="width:100%;">
+            <span>🌅 Sun Cycle</span>
+          </div>
+          <div class="solar-arc-wrapper">
+            <div class="solar-arc-bg"></div>
+            <div id="solarSunDot" class="solar-sun-dot"></div>
+          </div>
+          <div class="solar-times-row">
+            <div>Sunrise: <b id="sunriseTime" style="color:var(--accent-amber);">06:05 AM</b></div>
+            <div>Sunset: <b id="sunsetTime" style="color:var(--accent-rose);">06:45 PM</b></div>
+          </div>
+        </section>
+
+        <!-- 7-Day Forecast Card -->
+        <section class="glass-card">
+          <div class="section-title">
+            <span>📅 7-Day Forecast</span>
+          </div>
+          <div id="dailyForecastList" class="daily-forecast-list"></div>
+        </section>
+
+      </div>
+
+    </main>
+
+    <!-- Tier 1 & Tier 2 Indian Cities Grid Directory -->
+    <section class="cities-directory-section">
+      <div class="directory-header">
+        <div>
+          <h2 style="font-size:1.5rem; font-weight:800;">🇮🇳 Indian Cities Directory</h2>
+          <p style="font-size:0.875rem; color:var(--text-secondary);">Explore live temperature snapshots across all Tier 1 & Tier 2 cities in India.</p>
+        </div>
+      </div>
+
+      <div id="citiesCardGrid" class="cities-card-grid"></div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="margin-top: 4rem; text-align: center; color: var(--text-muted); font-size: 0.85rem; border-top: 1px solid var(--card-border); padding-top: 2rem;">
+      <p>SkyPulse India Weather Dashboard • Real-time Open-Meteo Weather & Air Quality API Data</p>
+      <p style="margin-top: 4px;">Covering 8 Tier 1 Metros & 90+ Tier 2 Indian Cities across all States & UTs</p>
+    </footer>
+
+  </div>
+
+  <!-- Multi-City Comparison Modal Drawer -->
+  <div id="compareModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">⚖️ Indian Cities Weather Comparison</div>
+        <button id="modalClose" class="modal-close-btn">✕</button>
+      </div>
+      <div id="comparisonGrid" class="comparison-grid"></div>
+    </div>
+  </div>
+
+  <!-- JavaScript Modules -->
+  <script src="js/cities-data.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
